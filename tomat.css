@@ -1,1 +1,37 @@
 /* CSS declarations go here */
+html {
+  min-height: 100%;
+}
+
+
+body {
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  
+}
+
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* centered columns styles */
+.row-centered {
+    text-align:center;
+}
+.col-centered {
+    display:inline-block;
+    float:none;
+    /* reset the text-align */
+    text-align:left;
+    /* inline-block space fix */
+    margin-right:-4px;
+}
+
+.scroll-area {
+  height: 250px;
+  position: relative;
+  overflow: auto;
+}

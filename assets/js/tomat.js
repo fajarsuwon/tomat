@@ -10,11 +10,11 @@ Meteor.isClient && Template.registerHelper("TabularTables", TabularTables);
       name: "volumeCol",
       collection: volumeCol,
       columns: [
-        {data: "num", title: "No."},
-        {data: "tem", title: "Temperature (°C)"},
-        {data: "hum", title: "Humidity (%RH)"},
-        {data: "vol", title: "Volume (mL)"},
-        {data: "date", title: "Date"}
+        {data: "num", title: "No.", width: "10%", align:"right"},
+        {data: "tem", title: "Temperature (°C)", width: "20%"},
+        {data: "hum", title: "Humidity (%RH)", width: "20%"},
+        {data: "vol", title: "Volume (mL)", width: "20%"},
+        {data: "date", title: "Date", width: "30%"}
       ]
     });
 //end of datatables
@@ -40,10 +40,22 @@ var volume=0; var calTem=0; var calHum=0; var calDate; var calTime;
     datatem = tem;
     datahum = hum;
     datatime = time;
-    $('#datatem').replaceWith('<h4><span id="datatem" class="label label-lg label-danger" value="'+tem+'">'+tem+' °C</span></h4>');
-    $('#datahum').replaceWith('<h4><span id="datahum" class="label label-lg label-info" value="'+hum+'">'+hum+' %RH</span><h4>');
+    $('#datatem').replaceWith('<h3><span id="datatem" class="label label-lg label-danger" value="'+tem+'">'+tem+' °C</span></h3>');
+    $('#datahum').replaceWith('<h3><span id="datahum" class="label label-lg label-info" value="'+hum+'">'+hum+' %RH</span><h3>');
     $('#datadatetime').replaceWith('<div id="datadatetime">Retrieved : '+date+' @ '+time+'</div>');
-    $('#databat').replaceWith('<div id="databat">Battery : '+bat+' %</div>');
+    $('#databat').replaceWith('<div id="databat">'+bat+'%</div>');
+
+
+    //langsung dihitung
+        volume = Math.round((calculateFuzzy(datatem, datahum))*50);
+            $('#volume').replaceWith('<div id="volume"><h4>Volume Air = <span class="label label-success">'+volume+'mL</span></h4><small> pada Suhu '+datatem+'°C dan Kelembaban '+datahum+' %RH</small></div>');
+            var curr = new Date();
+            calDate = (curr.getFullYear())+"/"+("0"+(curr.getMonth()+1)).slice(-2)+"/"+("0"+curr.getDate()).slice(-2);
+            calTime = ("0"+curr.getHours()).slice(-2)+":"+("0"+curr.getMinutes()).slice(-2)+":"+("0"+curr.getSeconds()).slice(-2);
+            calTem = datatem;
+            calHum = datahum;
+
+        
   });
 
 
@@ -78,9 +90,8 @@ var volume=0; var calTem=0; var calHum=0; var calDate; var calTime;
                         }, 15000);
                     }
                 }
-            },
-            title: {
-                text: 'Realtime Temperature and Humidity'
+            },title: {
+                text:''
             },
             xAxis: {
                 type: 'datetime',
@@ -88,7 +99,7 @@ var volume=0; var calTem=0; var calHum=0; var calDate; var calTime;
             },
             yAxis: [{
                 title: {
-                    text: 'Temperature'
+                    text: 'Data'
                 },
                 plotLines: [{
 
@@ -99,7 +110,7 @@ var volume=0; var calTem=0; var calHum=0; var calDate; var calTime;
             },
             {
                 title: {
-                    text: 'Humidity'
+                    text: ''
                 },
                 plotLines: [{
                     value: 0,
@@ -178,7 +189,8 @@ var volume=0; var calTem=0; var calHum=0; var calDate; var calTime;
     Template.buttonHitung.events({
         'click .clickme': function(){
             volume = Math.round((calculateFuzzy(datatem, datahum))*50);
-            $('#volume').replaceWith('<div id="volume"><h4>Volume Air = <span class="label label-success">'+volume+'mL</span></h4><small> pada Suhu '+datatem+'°C dan Kelembaban '+datahum+' %RH</small></div>');
+            $('#volume').replaceWith('<div id="volume"><h3>Volume Air = <span class="label label-success">'+volume+'mL</span></h3><small> pada Suhu '+datatem+'°C dan Kelembaban '+datahum+' %RH</small></div>');
+            
             var curr = new Date();
             calDate = (curr.getFullYear())+"/"+("0"+(curr.getMonth()+1)).slice(-2)+"/"+("0"+curr.getDate()).slice(-2);
             calTime = ("0"+curr.getHours()).slice(-2)+":"+("0"+curr.getMinutes()).slice(-2)+":"+("0"+curr.getSeconds()).slice(-2);
